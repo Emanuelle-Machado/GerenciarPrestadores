@@ -1,0 +1,304 @@
+package com.example.gerenciarprestadores;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gerenciarprestadores.DAO.AgendamentoDao;
+import com.example.gerenciarprestadores.DAO.PagamentoDao;
+import com.example.gerenciarprestadores.DAO.ServicoDao;
+import com.example.gerenciarprestadores.DAO.TipoServicoDao;
+import com.example.gerenciarprestadores.Database.AppDatabase;
+import com.example.gerenciarprestadores.model.Agendamento;
+import com.example.gerenciarprestadores.model.Pagamento;
+import com.example.gerenciarprestadores.model.Servico;
+import com.example.gerenciarprestadores.model.TipoServico;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class DetalhesAgendamentoActivity extends AppCompatActivity {
+    private TextView tvNomeCliente, tvEndereco, tvTelefone, tvData;
+    private RecyclerView recyclerViewServicos;
+    private ServicoAdapter adapter;
+    private List<Servico> servicoList;
+    private Button btnLancarRecebimento, btnRenegociar, btnCancelar, btnAbrirMapa, btnLigar;
+    private AppDatabase db;
+    private AgendamentoDao agendamentoDao;
+    private ServicoDao servicoDao;
+    private TipoServicoDao tipoServicoDao;
+    private PagamentoDao pagamentoDao;
+    private long agendamentoId;
+    private Agendamento agendamento;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detalhes_agendamento);
+
+        tvNomeCliente = findViewById(R.id.tvNomeCliente);
+        tvEndereco = findViewById(R.id.tvEndereco);
+        tvTelefone = findViewById(R.id.tvTelefone);
+        tvData = findViewById(R.id.tvData);
+        recyclerViewServicos = findViewById(R.id.recyclerViewServicos);
+        btnLancarRecebimento = findViewById(R.id.btnLancarRecebimento);
+        btnRenegociar = findViewById(R.id.btnRenegociar);
+        btnCancelar = findViewById(R.id.btnCancelar);
+        btnAbrirMapa = findViewById(R.id.btnAbrirMapa);
+        btnLigar = findViewById(R.id.btnLigar);
+
+        servicoList = new ArrayList<>();
+        adapter = new ServicoAdapter(servicoList);
+        recyclerViewServicos.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewServicos.setAdapter(adapter);
+
+        db = AppDatabase.getInstance(this);
+        agendamentoDao = db.agendamentoDao();
+        servicoDao = db.servicoDao();
+        tipoServicoDao = db.tipoServicoDao();
+        pagamentoDao = db.pagamentoDao();
+
+        agendamentoId = getIntent().getLongExtra("agendamentoId", -1);
+        if (agendamentoId == -1) {
+            Toast.makeText(this, "Erro ao obter agendamento", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        loadAgendamento();
+        loadServicos();
+
+        btnAbrirMapa.setOnClickListener(v -> abrirGoogleMaps());
+        btnLigar.setOnLongClickListener(v -> {
+            ligarParaCliente();
+            return true;
+        });
+        btnLancarRecebimento.setOnClickListener(v -> showLancarRecebimentoDialog());
+        btnRenegociar.setOnClickListener(v -> renegociarServicos());
+        btnCancelar.setOnClickListener(v -> confirmarCancelamento());
+    }
+
+    private void loadAgendamento() {
+        new Thread(() -> {
+            agendamento = agendamentoDao.getById(agendamentoId);
+            runOnUiThread(() -> {
+                if (agendamento != null) {
+                    tvNomeCliente.setText(agendamento.nomeCliente);
+                    tvEndereco.setText(agendamento.endereco);
+                    tvTelefone.setText(agendamento.telefone);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                    tvData.setText(dateFormat.format(agendamento.data));
+                } else {
+                    Toast.makeText(this, "Agendamento não encontrado", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }).start();
+    }
+
+    private void loadServicos() {
+        new Thread(() -> {
+            servicoList.clear();
+            servicoList.addAll(servicoDao.getByAgendamentoId(agendamentoId));
+            runOnUiThread(() -> adapter.notifyDataSetChanged());
+        }).start();
+    }
+
+    private void abrirGoogleMaps() {
+        if (agendamento != null) {
+            String endereco = Uri.encode(agendamento.endereco);
+            Uri uri = Uri.parse("google.navigation:q=" + endereco);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setPackage("com.google.android.apps.maps");
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Google Maps não instalado", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void ligarParaCliente() {
+        if (agendamento != null) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + agendamento.telefone));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Aplicativo de telefone não disponível", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void showLancarRecebimentoDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_lancar_recebimento, null);
+        builder.setView(dialogView);
+
+        Spinner spinnerServicos = dialogView.findViewById(R.id.spinnerServicos);
+        EditText etValorPago = dialogView.findViewById(R.id.etValorPago);
+        Button btnSalvar = dialogView.findViewById(R.id.btnSalvar);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
+
+        ArrayAdapter<Servico> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, servicoList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerServicos.setAdapter(adapter);
+
+        AlertDialog dialog = builder.create();
+
+        btnSalvar.setOnClickListener(v -> {
+            Servico servicoSelecionado = (Servico) spinnerServicos.getSelectedItem();
+            String valorPagoStr = etValorPago.getText().toString();
+
+            if (servicoSelecionado == null || valorPagoStr.isEmpty()) {
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double valorPago;
+            try {
+                valorPago = Double.parseDouble(valorPagoStr);
+                if (valorPago <= 0) {
+                    Toast.makeText(this, "Valor pago deve ser maior que zero", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Valor inválido", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            new Thread(() -> {
+                Pagamento pagamento = new Pagamento();
+                pagamento.servicoId = servicoSelecionado.id;
+                pagamento.valorPago = valorPago;
+                pagamento.dataPagamento = new Date();
+                pagamentoDao.insert(pagamento);
+
+                double totalPago = pagamentoDao.getTotalPagoByServicoId(servicoSelecionado.id);
+                String novoStatus;
+                if (totalPago >= servicoSelecionado.valorTotal) {
+                    novoStatus = "Recebido";
+                } else if (totalPago > 0) {
+                    novoStatus = "Parcialmente Recebido";
+                } else {
+                    novoStatus = "A Receber";
+                }
+
+                servicoSelecionado.status = novoStatus;
+                servicoDao.update(servicoSelecionado);
+
+                runOnUiThread(() -> {
+                    loadServicos();
+                    dialog.dismiss();
+                    Toast.makeText(this, "Pagamento lançado com sucesso", Toast.LENGTH_SHORT).show();
+                });
+            }).start();
+        });
+
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private void renegociarServicos() {
+        Intent intent = new Intent(this, AdicionarServicosActivity.class);
+        intent.putExtra("agendamentoId", agendamentoId);
+        startActivity(intent);
+    }
+
+    private void confirmarCancelamento() {
+        new AlertDialog.Builder(this)
+                .setTitle("Cancelar Agendamento")
+                .setMessage("Deseja cancelar este agendamento? Isso excluirá todos os serviços associados.")
+                .setPositiveButton("Sim", (dialog, which) -> {
+                    new Thread(() -> {
+                        agendamentoDao.delete(agendamento);
+                        runOnUiThread(() -> {
+                            Toast.makeText(this, "Agendamento cancelado", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
+                    }).start();
+                })
+                .setNegativeButton("Não", null)
+                .show();
+    }
+
+    private class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHolder> {
+        private List<Servico> servicos;
+
+        public ServicoAdapter(List<Servico> servicos) {
+            this.servicos = servicos;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_servico_detalhes, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            Servico servico = servicos.get(position);
+            new Thread(() -> {
+                TipoServico tipo = tipoServicoDao.getById(servico.tipoServicoId);
+                runOnUiThread(() -> {
+                    holder.tvDescricao.setText(String.format("%s - %.2f %s", tipo.nome, servico.quantidade, tipo.unidadeMedida));
+                    holder.tvValor.setText(String.format("R$ %.2f", servico.valorTotal));
+                    holder.tvStatus.setText(servico.status);
+
+                    if (!servico.status.equals("Executado") && !servico.status.equals("Recebido") && !servico.status.equals("Parcialmente Recebido")) {
+                        holder.btnMarcarExecutado.setVisibility(View.VISIBLE);
+                        holder.btnMarcarExecutado.setOnClickListener(v -> marcarComoExecutado(servico));
+                    } else {
+                        holder.btnMarcarExecutado.setVisibility(View.GONE);
+                    }
+                });
+            }).start();
+        }
+
+        @Override
+        public int getItemCount() {
+            return servicos.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvDescricao, tvValor, tvStatus;
+            Button btnMarcarExecutado;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tvDescricao = itemView.findViewById(R.id.tvDescricao);
+                tvValor = itemView.findViewById(R.id.tvValor);
+                tvStatus = itemView.findViewById(R.id.tvStatus);
+                btnMarcarExecutado = itemView.findViewById(R.id.btnMarcarExecutado);
+            }
+        }
+
+        private void marcarComoExecutado(Servico servico) {
+            new Thread(() -> {
+                servico.status = "Executado";
+                servicoDao.update(servico);
+                runOnUiThread(() -> {
+                    loadServicos();
+                    Toast.makeText(DetalhesAgendamentoActivity.this, "Serviço marcado como executado", Toast.LENGTH_SHORT).show();
+                });
+            }).start();
+        }
+    }
+}
