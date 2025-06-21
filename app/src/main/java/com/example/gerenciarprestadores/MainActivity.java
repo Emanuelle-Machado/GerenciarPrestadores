@@ -3,6 +3,7 @@ package com.example.gerenciarprestadores;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,10 @@ public class MainActivity extends AppCompatActivity {
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    loadAgendamentosPorData(calendar.getTime());
+                    long startOfDay = calendar.getTimeInMillis();
+                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+                    long endOfDay = calendar.getTimeInMillis();
+                    loadAgendamentosPorData(startOfDay, endOfDay);
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -101,18 +105,21 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void loadAgendamentosPorData(Date data) {
+    private void loadAgendamentosPorData(long startOfDay, long endOfDay) {
         new Thread(() -> {
             agendamentoList.clear();
-            agendamentoList.addAll(agendamentoDao.getByDate(data));
+            List<Agendamento> agendamentos = agendamentoDao.getByDateRange(startOfDay, endOfDay);
+            agendamentoList.addAll(agendamentos);
             runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
+                Log.d("MainActivity", "Agendamentos filtrados para data: " + agendamentos.size());
                 if (agendamentoList.isEmpty()) {
                     Toast.makeText(this, "Nenhum agendamento encontrado para a data selecionada", Toast.LENGTH_SHORT).show();
                 }
             });
         }).start();
     }
+
 
     private class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.ViewHolder> {
         private List<Agendamento> agendamentos;
