@@ -2,8 +2,11 @@ package com.example.gerenciarprestadores;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.Manifest;
 import com.example.gerenciarprestadores.DAO.AgendamentoDao;
 import com.example.gerenciarprestadores.DAO.PagamentoDao;
 import com.example.gerenciarprestadores.DAO.ServicoDao;
@@ -46,6 +51,7 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
     private PagamentoDao pagamentoDao;
     private long agendamentoId;
     private Agendamento agendamento;
+    private static final int REQUEST_CALL_PHONE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +92,7 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
 
         btnAbrirMapa.setOnClickListener(v -> abrirGoogleMaps());
         btnLigar.setOnLongClickListener(v -> {
-            ligarParaCliente();
+            iniciarLigacao();
             return true;
         });
         btnLancarRecebimento.setOnClickListener(v -> showLancarRecebimentoDialog());
@@ -100,8 +106,9 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (agendamento != null) {
                     tvNomeCliente.setText(agendamento.nomeCliente);
-                    tvEndereco.setText(agendamento.endereco);
-                    tvTelefone.setText(agendamento.telefone);
+                    tvEndereco = findViewById(R.id.tvEndereco);
+                    tvTelefone = findViewById(R.id.tvTelefone);
+                    tvData = findViewById(R.id.tvData);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
                     tvData.setText(dateFormat.format(agendamento.data));
                 } else {
@@ -123,25 +130,96 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
     private void abrirGoogleMaps() {
         if (agendamento != null) {
             String endereco = Uri.encode(agendamento.endereco);
-            Uri uri = Uri.parse("google.navigation:q=" + endereco);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.setPackage("com.google.android.apps.maps");
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
+            // Tentar com geo:0,0?q= primeiro
+            Uri geoUri = Uri.parse("geo:0,0?q=" + endereco);
+            Intent geoIntent = new Intent(Intent.ACTION_VIEW, geoUri);
+            Log.d("DetalhesAgendamento", "Tentando abrir URI: " + geoUri);
+
+            // Logar aplicativos disponíveis para o Intent geo
+            List<ResolveInfo> geoActivities = getPackageManager().queryIntentActivities(geoIntent, 0);
+            Log.d("DetalhesAgendamento", "Aplicativos disponíveis para geo URI: " + geoActivities.size());
+            for (ResolveInfo info : geoActivities) {
+                Log.d("DetalhesAgendamento", "App: " + info.activityInfo.packageName);
+            }
+
+            if (geoIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(geoIntent);
+                Log.d("DetalhesAgendamento", "Iniciando aplicativo de mapas com geo URI: " + geoUri);
             } else {
-                Toast.makeText(this, "Google Maps não instalado", Toast.LENGTH_SHORT).show();
+                // Tentar com google.navigation como fallback
+                Uri navUri = Uri.parse("google.navigation:q=" + endereco);
+                Intent navIntent = new Intent(Intent.ACTION_VIEW, navUri);
+                navIntent.setPackage("com.google.android.apps.maps");
+                Log.d("DetalhesAgendamento", "Tentando fallback URI: " + navUri);
+
+                // Logar aplicativos disponíveis para o Intent google.navigation
+                List<ResolveInfo> navActivities = getPackageManager().queryIntentActivities(navIntent, 0);
+                Log.d("DetalhesAgendamento", "Aplicativos disponíveis para navigation URI: " + navActivities.size());
+                for (ResolveInfo info : navActivities) {
+                    Log.d("DetalhesAgendamento", "App: " + info.activityInfo.packageName);
+                }
+
+                if (navIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(navIntent);
+                    Log.d("DetalhesAgendamento", "Iniciando Google Maps com navigation URI: " + navUri);
+                } else {
+                    // Último fallback: abrir no navegador
+                    Uri webUri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + endereco);
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
+                    Log.d("DetalhesAgendamento", "Tentando abrir no navegador: " + webUri);
+
+                    if (webIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(webIntent);
+                        Log.d("DetalhesAgendamento", "Iniciando navegador com URI: " + webUri);
+                    } else {
+                        Toast.makeText(this, "Nenhum aplicativo ou navegador disponível para abrir mapas", Toast.LENGTH_SHORT).show();
+                        Log.e("DetalhesAgendamento", "Nenhum aplicativo encontrado para URIs: geo, google.navigation, web");
+                    }
+                }
+            }
+        }
+    }
+
+    private void iniciarLigacao() {
+        if (agendamento != null) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                ligarParaCliente();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PHONE);
+                Log.d("DetalhesAgendamento", "Solicitando permissão CALL_PHONE");
             }
         }
     }
 
     private void ligarParaCliente() {
-        if (agendamento != null) {
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + agendamento.telefone));
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + agendamento.telefone));
+        Log.d("DetalhesAgendamento", "Iniciando Intent ACTION_CALL para: " + agendamento.telefone);
+
+        try {
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
+                Log.d("DetalhesAgendamento", "Ligação iniciada com sucesso");
             } else {
-                Toast.makeText(this, "Aplicativo de telefone não disponível", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Nenhum aplicativo de telefone disponível", Toast.LENGTH_SHORT).show();
+                Log.e("DetalhesAgendamento", "Nenhum aplicativo de telefone encontrado");
+            }
+        } catch (SecurityException e) {
+            Toast.makeText(this, "Permissão para ligação não concedida", Toast.LENGTH_SHORT).show();
+            Log.e("DetalhesAgendamento", "SecurityException ao iniciar ligação: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL_PHONE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                ligarParaCliente();
+                Log.d("DetalhesAgendamento", "Permissão CALL_PHONE concedida");
+            } else {
+                Toast.makeText(this, "Permissão para ligação negada", Toast.LENGTH_SHORT).show();
+                Log.w("DetalhesAgendamento", "Permissão CALL_PHONE negada");
             }
         }
     }
