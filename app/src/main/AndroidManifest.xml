@@ -13,6 +13,12 @@
         android:theme="@style/Theme.GerenciarPrestadores"
         tools:targetApi="31">
         <activity
+            android:name=".AdicionarServicosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CadastroAgendamentoActivity"
+            android:exported="false" />
+        <activity
             android:name=".TipoServicoActivity"
             android:exported="false" />
         <activity
