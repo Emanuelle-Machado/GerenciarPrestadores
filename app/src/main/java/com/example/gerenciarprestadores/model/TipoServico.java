@@ -34,6 +34,11 @@ public class TipoServico {
         return Objects.hashCode(id);
     }
 
+    @Override
+    public String toString() {
+        return nome; // Exibe o nome do tipo de serviço no Spinner
+    }
+
     public long getId() {
         return id;
     }
