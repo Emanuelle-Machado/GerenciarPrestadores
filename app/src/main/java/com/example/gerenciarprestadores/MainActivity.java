@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         recyclerView = findViewById(R.id.recyclerViewAgendamentos);
         btnFiltrarData = findViewById(R.id.btnFiltrarData);
         btnMostrarTodos = findViewById(R.id.btnMostrarTodos);
@@ -59,22 +66,33 @@ public class MainActivity extends AppCompatActivity {
         btnMostrarTodos.setOnClickListener(v -> loadTodosAgendamentos());
     }
 
-    public void cadastrarTipoServico(View v) {
-        Intent intent = new Intent(this, TipoServicoActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
-    public void cadastrarAgendamento(View v) {
-        Intent intent = new Intent(this, CadastroAgendamentoActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_tipos_servico) {
+            startActivity(new Intent(this, TipoServicoActivity.class));
+            return true;
+        } else if (itemId == R.id.menu_cadastrar_agendamento) {
+            startActivity(new Intent(this, CadastroAgendamentoActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadTodosAgendamentos() {
         new Thread(() -> {
             agendamentoList.clear();
-            agendamentoList.addAll(agendamentoDao.getAll());
+            List<Agendamento> agendamentos = agendamentoDao.getAll();
+            agendamentoList.addAll(agendamentos);
             runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
+                Log.d("MainActivity", "Agendamentos carregados: " + agendamentos.size());
                 if (agendamentoList.isEmpty()) {
                     Toast.makeText(this, "Nenhum agendamento encontrado", Toast.LENGTH_SHORT).show();
                 }
@@ -120,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-
     private class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.ViewHolder> {
         private List<Agendamento> agendamentos;
         private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -143,11 +160,19 @@ public class MainActivity extends AppCompatActivity {
             holder.tvEndereco.setText(agendamento.endereco);
             holder.tvData.setText(dateFormat.format(agendamento.data));
 
-            // Clique para abrir tela de serviços (a ser implementada)
+            // Clique simples para abrir tela de serviços
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, AdicionarServicosActivity.class);
                 intent.putExtra("agendamentoId", agendamento.id);
                 startActivity(intent);
+            });
+
+            // Clique longo para abrir detalhes do agendamento
+            holder.itemView.setOnLongClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, DetalhesAgendamentoActivity.class);
+                intent.putExtra("agendamentoId", agendamento.id);
+                startActivity(intent);
+                return true;
             });
         }
 
