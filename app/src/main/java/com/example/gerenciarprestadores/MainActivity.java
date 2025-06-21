@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,7 +72,12 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             agendamentoList.clear();
             agendamentoList.addAll(agendamentoDao.getAll());
-            runOnUiThread(() -> adapter.notifyDataSetChanged());
+            runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+                if (agendamentoList.isEmpty()) {
+                    Toast.makeText(this, "Nenhum agendamento encontrado", Toast.LENGTH_SHORT).show();
+                }
+            });
         }).start();
     }
 
@@ -81,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
                     loadAgendamentosPorData(calendar.getTime());
                 },
                 calendar.get(Calendar.YEAR),
@@ -94,7 +105,12 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             agendamentoList.clear();
             agendamentoList.addAll(agendamentoDao.getByDate(data));
-            runOnUiThread(() -> adapter.notifyDataSetChanged());
+            runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+                if (agendamentoList.isEmpty()) {
+                    Toast.makeText(this, "Nenhum agendamento encontrado para a data selecionada", Toast.LENGTH_SHORT).show();
+                }
+            });
         }).start();
     }
 

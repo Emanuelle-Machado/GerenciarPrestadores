@@ -25,7 +25,7 @@ public interface AgendamentoDao {
     @Query("SELECT * FROM agendamento ORDER BY data DESC")
     List<Agendamento> getAll();
 
-    @Query("SELECT * FROM agendamento WHERE data = :data")
+    @Query("SELECT * FROM agendamento WHERE date(data / 1000, 'unixepoch') = date(:data / 1000, 'unixepoch')")
     List<Agendamento> getByDate(Date data);
 
     @Query("SELECT * FROM agendamento WHERE id = :id")
