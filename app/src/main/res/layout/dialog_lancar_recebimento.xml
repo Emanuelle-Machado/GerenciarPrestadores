@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:text="Valor Total: R$ 0,00"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/colorText"
+        android:textColorHint="@color/colorHint"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -36,7 +37,8 @@
         android:layout_height="wrap_content"
         android:text="Total Pago: R$ 0,00"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/colorText"
+        android:textColorHint="@color/colorHint"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -55,6 +57,8 @@
         android:inputType="numberDecimal"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_edittext"
+        android:textColor="@color/colorText"
+        android:textColorHint="@color/colorHint"
         android:padding="12dp" />
 
     <!-- Botões -->
