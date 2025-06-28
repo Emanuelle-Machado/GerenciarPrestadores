@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/background_light"
     android:padding="16dp"
-    tools:context=".AdicionarServicosActivity">
+    tools:context=".views.AdicionarServicosActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewServicos"

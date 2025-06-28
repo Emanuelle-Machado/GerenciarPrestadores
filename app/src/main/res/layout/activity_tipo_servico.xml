@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/background_light"
     android:padding="16dp"
-    tools:context=".TipoServicoActivity">
+    tools:context=".views.TipoServicoActivity">
 
     <!-- Lista dos tipos de serviço -->
     <androidx.recyclerview.widget.RecyclerView

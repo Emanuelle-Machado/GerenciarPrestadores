@@ -17,19 +17,19 @@
         android:theme="@style/Theme.GerenciarPrestadores"
         tools:targetApi="31">
         <activity
-            android:name=".DetalhesAgendamentoActivity"
+            android:name=".views.DetalhesAgendamentoActivity"
             android:exported="false" />
         <activity
-            android:name=".AdicionarServicosActivity"
+            android:name=".views.AdicionarServicosActivity"
             android:exported="false" />
         <activity
-            android:name=".CadastroAgendamentoActivity"
+            android:name=".views.CadastroAgendamentoActivity"
             android:exported="false" />
         <activity
-            android:name=".TipoServicoActivity"
+            android:name=".views.TipoServicoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
             <intent-filter>
