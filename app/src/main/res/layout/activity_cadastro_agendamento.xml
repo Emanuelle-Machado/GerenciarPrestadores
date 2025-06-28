@@ -1,56 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CadastroAgendamentoActivity"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/background_light"
+    android:padding="16dp"
+    tools:context=".CadastroAgendamentoActivity">
 
-    <EditText
-        android:id="@+id/etNomeCliente"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome do Cliente"
-        android:inputType="textPersonName" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etEndereco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Endereço"
-        android:inputType="textPostalAddress" />
+        <EditText
+            android:id="@+id/etNomeCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome do Cliente"
+            android:inputType="textPersonName"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
 
-    <EditText
-        android:id="@+id/etTelefone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Telefone"
-        android:inputType="phone" />
+        <EditText
+            android:id="@+id/etEndereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Endereço"
+            android:inputType="textPostalAddress"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
 
-    <EditText
-        android:id="@+id/etData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Data"
-        android:inputType="none"
-        android:focusable="false" />
+        <EditText
+            android:id="@+id/etTelefone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Telefone"
+            android:inputType="phone"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
 
-    <EditText
-        android:id="@+id/etHora"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Hora"
-        android:inputType="none"
-        android:focusable="false" />
+        <EditText
+            android:id="@+id/etData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Data"
+            android:inputType="none"
+            android:focusable="false"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:drawableEnd="@android:drawable/ic_menu_today"
+            android:layout_marginBottom="12dp" />
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Salvar" />
+        <EditText
+            android:id="@+id/etHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hora"
+            android:inputType="none"
+            android:focusable="false"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:drawableEnd="@android:drawable/ic_menu_recent_history"
+            android:layout_marginBottom="24dp" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:elevation="2dp" />
+    </LinearLayout>
+</ScrollView>

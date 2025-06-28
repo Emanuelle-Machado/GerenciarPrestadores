@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background_light"
     android:padding="16dp"
     tools:context=".DetalhesAgendamentoActivity">
 
@@ -14,46 +14,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tvEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginBottom="2dp" />
 
     <TextView
         android:id="@+id/tvTelefone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginBottom="2dp" />
 
     <TextView
         android:id="@+id/tvData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="12dp" />
 
+    <!-- Botões: Mapa e ligação -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_marginBottom="16dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btnAbrirMapa"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Abrir Mapa" />
+            android:text="Abrir Mapa"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnLigar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ligar (clique longo)" />
-
+            android:text="Ligar (clique longo)"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <TextView
@@ -62,41 +79,57 @@
         android:text="Serviços Contratados"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="16dp" />
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewServicos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="8dp" />
 
+    <!-- Botões: Receber, Renegociar, Cancelar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="16dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btnLancarRecebimento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Lançar Recebimento" />
+            android:text="Receber"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="6dp" />
 
         <Button
             android:id="@+id/btnRenegociar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Renegociar" />
+            android:text="Renegociar"
+            android:textAllCaps="false"
+            android:backgroundTint="#FFA000"
+            android:textColor="@android:color/white"
+            android:layout_marginHorizontal="6dp" />
 
         <Button
             android:id="@+id/btnCancelar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancelar" />
-
+            android:text="Cancelar"
+            android:textAllCaps="false"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="6dp" />
     </LinearLayout>
 
 </LinearLayout>
