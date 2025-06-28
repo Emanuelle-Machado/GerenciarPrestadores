@@ -1,4 +1,4 @@
-package com.example.gerenciarprestadores;
+package com.example.gerenciarprestadores.views;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -28,6 +28,7 @@ import com.example.gerenciarprestadores.DAO.PagamentoDao;
 import com.example.gerenciarprestadores.DAO.ServicoDao;
 import com.example.gerenciarprestadores.DAO.TipoServicoDao;
 import com.example.gerenciarprestadores.Database.AppDatabase;
+import com.example.gerenciarprestadores.R;
 import com.example.gerenciarprestadores.model.Agendamento;
 import com.example.gerenciarprestadores.model.Pagamento;
 import com.example.gerenciarprestadores.model.Servico;
@@ -36,8 +37,10 @@ import com.example.gerenciarprestadores.model.TipoServico;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class DetalhesAgendamentoActivity extends AppCompatActivity {
     private TextView tvNomeCliente, tvEndereco, tvTelefone, tvData;
@@ -237,9 +240,45 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
         Button btnSalvar = dialogView.findViewById(R.id.btnSalvar);
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
 
-        ArrayAdapter<Servico> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, servicoList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerServicos.setAdapter(adapter);
+        // Pré-carregar nomes dos tipos de serviço
+        Map<Long, String> tipoServicoNomes = new HashMap<>();
+        new Thread(() -> {
+            for (Servico servico : servicoList) {
+                TipoServico tipo = tipoServicoDao.getById(servico.tipoServicoId);
+                tipoServicoNomes.put(servico.id, tipo != null ? tipo.nome : "Serviço Desconhecido");
+            }
+            runOnUiThread(() -> {
+                // Criar ArrayAdapter personalizado para exibir apenas o nome do tipo de serviço
+                ArrayAdapter<Servico> adapter = new ArrayAdapter<Servico>(this, android.R.layout.simple_spinner_item, servicoList) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        TextView view = (TextView) super.getView(position, convertView, parent);
+                        Servico servico = getItem(position);
+                        if (servico != null) {
+                            view.setText(tipoServicoNomes.getOrDefault(servico.id, "Serviço Desconhecido"));
+                        }
+                        return view;
+                    }
+
+                    @Override
+                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                        TextView view = (TextView) super.getDropDownView(position, convertView, parent);
+                        Servico servico = getItem(position);
+                        if (servico != null) {
+                            view.setText(tipoServicoNomes.getOrDefault(servico.id, "Serviço Desconhecido"));
+                        }
+                        return view;
+                    }
+                };
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerServicos.setAdapter(adapter);
+
+                // Definir valores iniciais para o primeiro serviço, se houver
+                if (!servicoList.isEmpty()) {
+                    spinnerServicos.setSelection(0);
+                }
+            });
+        }).start();
 
         // Atualizar valores totais quando um serviço é selecionado
         spinnerServicos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -261,11 +300,6 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
                 tvTotalPago.setText("Total Pago: R$ 0,00");
             }
         });
-
-        // Definir valores iniciais para o primeiro serviço, se houver
-        if (!servicoList.isEmpty()) {
-            spinnerServicos.setSelection(0);
-        }
 
         AlertDialog dialog = builder.create();
 

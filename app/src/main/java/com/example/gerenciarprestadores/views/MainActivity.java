@@ -1,4 +1,4 @@
-package com.example.gerenciarprestadores;
+package com.example.gerenciarprestadores.views;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,12 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gerenciarprestadores.DAO.AgendamentoDao;
 import com.example.gerenciarprestadores.Database.AppDatabase;
+import com.example.gerenciarprestadores.R;
 import com.example.gerenciarprestadores.model.Agendamento;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

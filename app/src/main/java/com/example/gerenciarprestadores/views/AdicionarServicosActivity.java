@@ -1,4 +1,4 @@
-package com.example.gerenciarprestadores;
+package com.example.gerenciarprestadores.views;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gerenciarprestadores.DAO.ServicoDao;
 import com.example.gerenciarprestadores.DAO.TipoServicoDao;
 import com.example.gerenciarprestadores.Database.AppDatabase;
+import com.example.gerenciarprestadores.R;
 import com.example.gerenciarprestadores.model.Servico;
 import com.example.gerenciarprestadores.model.TipoServico;
 

@@ -1,4 +1,4 @@
-package com.example.gerenciarprestadores;
+package com.example.gerenciarprestadores.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,17 +9,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gerenciarprestadores.DAO.TipoServicoDao;
 import com.example.gerenciarprestadores.Database.AppDatabase;
+import com.example.gerenciarprestadores.R;
 import com.example.gerenciarprestadores.model.TipoServico;
 
 import java.util.ArrayList;
