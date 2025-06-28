@@ -22,13 +22,14 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
+            android:text="@string/descricao"
             android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/tvValor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Valor: R$ 0,00"
+            android:text="@string/valor"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
             android:layout_marginBottom="2dp" />
@@ -37,7 +38,7 @@
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status: Pendente"
+            android:text="@string/status"
             android:textSize="14sp"
             android:textColor="@android:color/holo_orange_dark"
             android:layout_marginBottom="8dp" />
@@ -46,7 +47,7 @@
             android:id="@+id/btnMarcarExecutado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Marcar como Executado"
+            android:text="@string/marcar_como_executado"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/colorPrimary"

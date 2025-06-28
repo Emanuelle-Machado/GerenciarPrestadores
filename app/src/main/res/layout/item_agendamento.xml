@@ -22,6 +22,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
+            android:text="@string/nome_do_cliente"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
+            android:text="@string/endereco_do_cliente"
             android:layout_marginBottom="2dp" />
 
         <TextView
@@ -37,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
+            android:text="@string/data_do_servico"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 

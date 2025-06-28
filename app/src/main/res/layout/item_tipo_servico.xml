@@ -22,13 +22,14 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
+            android:text="@string/nome_do_servico"
             android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/tvValor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Valor por unidade: R$ 0,00"
+            android:text="@string/valor_por_unidade"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray" />
 

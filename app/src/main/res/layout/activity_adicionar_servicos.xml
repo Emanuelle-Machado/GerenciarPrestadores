@@ -23,7 +23,7 @@
         android:id="@+id/btnAdicionarServico"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Adicionar Serviço"
+        android:text="@string/adicionar_servico"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/colorAccent"

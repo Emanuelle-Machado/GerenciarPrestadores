@@ -16,6 +16,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
+        android:text="@string/nome_do_cliente"
         android:layout_marginBottom="4dp" />
 
     <TextView
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/colorPrimaryDark"
+        android:text="@string/endereco_do_cliente"
         android:layout_marginBottom="2dp" />
 
     <TextView
@@ -32,6 +34,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/colorPrimaryDark"
+        android:text="@string/telefone_do_cliente"
         android:layout_marginBottom="2dp" />
 
     <TextView
@@ -40,6 +43,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
+        android:text="@string/data_do_servico"
         android:layout_marginBottom="12dp" />
 
     <!-- Botões: Mapa e ligação -->
@@ -55,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Abrir Mapa"
+            android:text="@string/abrir_mapa"
             android:textAllCaps="false"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@android:color/white"
@@ -66,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ligar (clique longo)"
+            android:text="@string/ligar_clique_longo"
             android:textAllCaps="false"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@android:color/white"
@@ -76,7 +80,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Serviços Contratados"
+        android:text="@string/servicos_contratados"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
@@ -103,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Receber"
+            android:text="@string/receber"
             android:textAllCaps="false"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@android:color/white"
@@ -114,8 +118,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Renegociar"
+            android:text="@string/renegociar"
             android:textAllCaps="false"
+            android:textSize="12sp"
             android:backgroundTint="#FFA000"
             android:textColor="@android:color/white"
             android:layout_marginHorizontal="6dp" />
@@ -125,7 +130,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancelar"
+            android:text="@string/cancelar"
             android:textAllCaps="false"
             android:backgroundTint="#D32F2F"
             android:textColor="@android:color/white"
