@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">ServiceManager</string>
+    <string name="nome_do_cliente">Customer Name</string>
+    <string name="endereco_do_cliente">Customer Address</string>
+    <string name="data_do_servico">Service Date</string>
+    <string name="valor">Amount: $0.00</string>
+    <string name="status">Status: Pending Payment</string>
+    <string name="marcar_como_executado">Mark as Completed</string>
+    <string name="descricao">Description</string>
+    <string name="nome_do_servico">Service Name</string>
+    <string name="valor_por_unidade">Unit Price: $0.00</string>
+    <string name="unidade_de_medida">Unit of Measure</string>
+    <string name="cancelar">Cancel</string>
+    <string name="salvar">Save</string>
+    <string name="selecionar_servico">Select Service</string>
+    <string name="valor_pago">Paid Amount</string>
+    <string name="total_pago">Total Paid: $0.00</string>
+    <string name="valor_total">Total Amount: $0.00</string>
+    <string name="quantidade">Quantity</string>
+    <string name="adicionar_tipo_de_servico">Add Service Type</string>
+    <string name="mostrar_todos">Show All</string>
+    <string name="filtrar_por_data">Filter by Date</string>
+    <string name="telefone_do_cliente">Customer Phone</string>
+    <string name="abrir_mapa">Open Map</string>
+    <string name="ligar_clique_longo">Call (long press)</string>
+    <string name="servicos_contratados">Contracted Services</string>
+    <string name="receber">Receive Payment</string>
+    <string name="renegociar">Renegotiate</string>
+    <string name="hora">Time</string>
+    <string name="telefone">Phone</string>
+    <string name="endereco">Address</string>
+    <string name="adicionar_servico">Add Service</string>
+</resources>
