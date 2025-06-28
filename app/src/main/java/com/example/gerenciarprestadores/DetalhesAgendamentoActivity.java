@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -231,12 +232,40 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
 
         Spinner spinnerServicos = dialogView.findViewById(R.id.spinnerServicos);
         EditText etValorPago = dialogView.findViewById(R.id.etValorPago);
+        TextView tvValorTotal = dialogView.findViewById(R.id.tvValorTotal);
+        TextView tvTotalPago = dialogView.findViewById(R.id.tvTotalPago);
         Button btnSalvar = dialogView.findViewById(R.id.btnSalvar);
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
 
         ArrayAdapter<Servico> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, servicoList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerServicos.setAdapter(adapter);
+
+        // Atualizar valores totais quando um serviço é selecionado
+        spinnerServicos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Servico servicoSelecionado = (Servico) parent.getSelectedItem();
+                new Thread(() -> {
+                    double totalPago = pagamentoDao.getTotalPagoByServicoId(servicoSelecionado.id);
+                    runOnUiThread(() -> {
+                        tvValorTotal.setText(String.format("Valor Total: R$ %.2f", servicoSelecionado.valorTotal));
+                        tvTotalPago.setText(String.format("Total Pago: R$ %.2f", totalPago));
+                    });
+                }).start();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                tvValorTotal.setText("Valor Total: R$ 0,00");
+                tvTotalPago.setText("Total Pago: R$ 0,00");
+            }
+        });
+
+        // Definir valores iniciais para o primeiro serviço, se houver
+        if (!servicoList.isEmpty()) {
+            spinnerServicos.setSelection(0);
+        }
 
         AlertDialog dialog = builder.create();
 
@@ -261,14 +290,23 @@ public class DetalhesAgendamentoActivity extends AppCompatActivity {
                 return;
             }
 
+            // Validar se o valor pago não excede o valor restante
             new Thread(() -> {
+                double totalPago = pagamentoDao.getTotalPagoByServicoId(servicoSelecionado.id);
+                double valorRestante = servicoSelecionado.valorTotal - totalPago;
+
+                if (valorPago > valorRestante) {
+                    runOnUiThread(() -> Toast.makeText(this, String.format("Valor pago excede o restante devido (R$ %.2f)", valorRestante), Toast.LENGTH_SHORT).show());
+                    return;
+                }
+
                 Pagamento pagamento = new Pagamento();
                 pagamento.servicoId = servicoSelecionado.id;
                 pagamento.valorPago = valorPago;
                 pagamento.dataPagamento = new Date();
                 pagamentoDao.insert(pagamento);
 
-                double totalPago = pagamentoDao.getTotalPagoByServicoId(servicoSelecionado.id);
+                totalPago += valorPago;
                 String novoStatus;
                 if (totalPago >= servicoSelecionado.valorTotal) {
                     novoStatus = "Recebido";
