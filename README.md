@@ -42,22 +42,25 @@ Neste projeto aprendi mais sobre o uso de Sqlite para ter banco de dados localme
 
 ## Screenshots
 
-<h3 align="center">Página inicial</h3>
-<!--<p align="center">
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/imglimpa.jpeg" alt="Página inicial" width="200"/>
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/imgpreenchida.jpeg" alt="Listagem de animais" width="200"/>
+<h3 align="center">Página inicial e listagens</h3>
+<p align="center">
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/pagina-inicial.jpeg" alt="Página inicial" width="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/lista-servicos.jpeg" alt="Listagem de serviços" width="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/listar-tipos.jpeg" alt="Listagem de tipos de serviços" width="200"/>
   </p>
 
-<!--<h3 align="center">Cadastros</h3>
+<h3 align="center">Cadastros</h3>
 <p align="center">
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/animais.jpeg" alt="Cadastro de Animais" width="200"/>
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/cidade.jpeg" alt="Dialogo de cadastro de cidade" width="200"/>
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/raca.jpeg" alt="Dialogo de cadastro de raças" width="200"/>
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/tipo.jpeg" alt="Dialogo de cadastro de tipos" width="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/cadastro-agendamento.jpeg" alt="Cadastro de Agendamentos" width="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/cadastro-servico.jpeg" alt="Dialogo de cadastro de Serviço" width="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/cadastro-tipo-servico.jpeg" alt="Dialogo de cadastro de Tipo de serviço" width="200"/>
 </p>
 
-<h3 align="center">Todas as telas tem sua versão horizontal</h3>
+<h3 align="center">Outros detalhes</h3>
 <p align="center">
-  <img src="https://github.com/Emanuelle-Machado/AdotarPets/blob/master/app/src/main/assets/horizontal.jpeg" alt="Imagem na horizontal" height="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/agendamento-detalhes.jpeg" alt="Detalhes de agendamento" height="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/pagamento.jpeg" alt="Executar/Pagar serviço" height="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/filtro.jpeg" alt="Dialog para o filtro por data" height="200"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/excluir.jpeg" alt="Dialog para excluir algo" height="200"/>
 </p> 
 
