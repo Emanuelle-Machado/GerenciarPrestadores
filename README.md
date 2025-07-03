@@ -58,9 +58,9 @@ Neste projeto aprendi mais sobre o uso de Sqlite para ter banco de dados localme
 
 <h3 align="center">Outros detalhes</h3>
 <p align="center">
-  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/agendamento-detalhes.jpeg" alt="Detalhes de agendamento" height="300"/>
-  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/pagamento.jpeg" alt="Executar/Pagar serviço" height="300"/>
-  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/filtro.jpeg" alt="Dialog para o filtro por data" height="300"/>
-  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/excluir.jpeg" alt="Dialog para excluir algo" height="300"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/agendamento-detalhes.jpeg" alt="Detalhes de agendamento" height="400"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/pagamento.jpeg" alt="Executar/Pagar serviço" height="400"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/filtro.jpeg" alt="Dialog para o filtro por data" height="400"/>
+  <img src="https://github.com/Emanuelle-Machado/GerenciarPrestadores/blob/master/app/src/main/assets/excluir.jpeg" alt="Dialog para excluir algo" height="400"/>
 </p> 
 
