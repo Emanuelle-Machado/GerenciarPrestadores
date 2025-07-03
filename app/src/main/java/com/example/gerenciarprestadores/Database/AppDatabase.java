@@ -1,6 +1,9 @@
 package com.example.gerenciarprestadores.Database;
 
+import android.content.Context;
+
 import androidx.room.Database;
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.room.TypeConverter;
@@ -23,16 +26,20 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AgendamentoDao agendamentoDao();
     public abstract ServicoDao servicoDao();
     public abstract PagamentoDao pagamentoDao();
+
+    private static volatile AppDatabase INSTANCE;
+
+    public static AppDatabase getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    AppDatabase.class, "service_provider_db")
+                            .build();
+                }
+            }
+        }
+        return INSTANCE;
+    }
 }
 
-class Converters {
-    @TypeConverter
-    public static Date fromTimestamp(Long value) {
-        return value == null ? null : new Date(value);
-    }
-
-    @TypeConverter
-    public static Long dateToTimestamp(Date date) {
-        return date == null ? null : date.getTime();
-    }
-}

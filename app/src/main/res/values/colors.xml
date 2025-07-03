@@ -2,4 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#388E3C</color>
+    <color name="colorAccent">#FFA000</color>
+    <color name="background_light">#FAFAFA</color>
+    <color name="colorPrimaryDark">#2E7D32</color>
+    <!-- Cores de Texto -->
+    <color name="colorText">#212121</color>          <!-- Preto suave: ótimo para textos principais -->
+    <color name="colorSecondaryText">#616161</color> <!-- Cinza escuro: bom para textos secundários -->
+    <color name="colorHint">#9E9E9E</color>           <!-- Cinza médio: ideal para hints -->
+
+    <!-- Cor de Fundo -->
+    <color name="colorBackground">#FFFFFF</color> <!-- Cor do Fundo -->
 </resources>

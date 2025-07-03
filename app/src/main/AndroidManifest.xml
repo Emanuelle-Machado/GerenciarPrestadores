@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +17,20 @@
         android:theme="@style/Theme.GerenciarPrestadores"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".views.DetalhesAgendamentoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.AdicionarServicosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.CadastroAgendamentoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.TipoServicoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

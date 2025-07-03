@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">GerenciarPrestadores</string>
+    <string name="nome_do_cliente">Nome do cliente</string>
+    <string name="endereco_do_cliente">Endereço do cliente</string>
+    <string name="data_do_servico">Data do serviço</string>
+    <string name="valor">Valor: R$ 0,00</string>
+    <string name="status">Status: A receber</string>
+    <string name="marcar_como_executado">Marcar como Executado</string>
+    <string name="descricao">Descrição</string>
+    <string name="nome_do_servico">Nome do serviço</string>
+    <string name="valor_por_unidade">Valor por unidade: R$ 0,00</string>
+    <string name="unidade_de_medida">Unidade de Medida</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="salvar">Salvar</string>
+    <string name="selecionar_servico">Selecionar Serviço</string>
+    <string name="valor_pago">Valor Pago</string>
+    <string name="total_pago">Total Pago: R$ 0,00</string>
+    <string name="valor_total">Valor Total: R$ 0,00</string>
+    <string name="quantidade">Quantidade</string>
+    <string name="adicionar_tipo_de_servico">Adicionar Tipo de Serviço</string>
+    <string name="mostrar_todos">Mostrar Todos</string>
+    <string name="filtrar_por_data">Filtrar por Data</string>
+    <string name="telefone_do_cliente">Telefone do cliente</string>
+    <string name="abrir_mapa">Abrir Mapa</string>
+    <string name="ligar_clique_longo">Ligar (clique longo)</string>
+    <string name="servicos_contratados">Serviços Contratados</string>
+    <string name="receber">Receber</string>
+    <string name="renegociar">Renegociar</string>
+    <string name="hora">Hora</string>
+    <string name="telefone">Telefone</string>
+    <string name="endereco">Endereço</string>
+    <string name="adicionar_servico">Adicionar Serviço</string>
 </resources>
